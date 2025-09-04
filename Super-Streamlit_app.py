@@ -28,7 +28,7 @@ NEZHA_VERSION = os.environ.get('NEZHA_VERSION', 'V1')
 NEZHA_SERVER = os.environ.get('NEZHA_SERVER', 'nazhav1.gamesover.eu.org')
 NEZHA_KEY = os.environ.get('NEZHA_KEY', 'qL7B61misbNGiLMBDxXJSBztCna5Vwsy')
 NEZHA_PORT = os.environ.get('NEZHA_PORT', '443')
-SUB_NAME = os.environ.get('SUB_NAME', 'streamlit.io')
+SUB_NAME = os.environ.get('SUB_NAME', 'Streamlit.io')
 MY_DOMAIN = os.environ.get('MY_DOMAIN', '')
 
 ARGO_DOMAIN = os.environ.get('ARGO_DOMAIN', '')
