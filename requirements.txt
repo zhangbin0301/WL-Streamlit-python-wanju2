@@ -1,2 +1,4 @@
 psutil
 Flask==2.3.2
+streamlit
+requests
