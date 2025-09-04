@@ -31,8 +31,8 @@ NEZHA_PORT = os.environ.get('NEZHA_PORT', '443')
 SUB_NAME = os.environ.get('SUB_NAME', 'streamlit')
 MY_DOMAIN = os.environ.get('MY_DOMAIN', '')
 
-ARGO_DOMAIN = os.environ.get('ARGO_DOMAIN', 'str.tcgd001.cf')
-ARGO_AUTH = os.environ.get('ARGO_AUTH', 'eyJhIjoiNjFmNmJhODg2ODkxNmJmZmM1ZDljNzM2NzdiYmIwMDYiLCJ0IjoiNjQ0OWRjOWQtZWVkZC00ZDY5LWIyYmItY2ExNTQ4MzRkYzlhIiwicyI6Ik1UTTNPVFF4TXpJdE5tVTNOUzAwTldJekxXSTFNR1l0TkRrd016bGxNR1ExTm1ZMyJ9')
+# ARGO_DOMAIN = os.environ.get('ARGO_DOMAIN', 'str.tcgd001.cf')
+# ARGO_AUTH = os.environ.get('ARGO_AUTH', 'eyJhIjoiNjFmNmJhODg2ODkxNmJmZmM1ZDljNzM2NzdiYmIwMDYiLCJ0IjoiNjQ0OWRjOWQtZWVkZC00ZDY5LWIyYmItY2ExNTQ4MzRkYzlhIiwicyI6Ik1UTTNPVFF4TXpJdE5tVTNOUzAwTldJekxXSTFNR1l0TkRrd016bGxNR1ExTm1ZMyJ9')
 
 def createFolder(folderPath):
     if not os.path.exists(folderPath):
