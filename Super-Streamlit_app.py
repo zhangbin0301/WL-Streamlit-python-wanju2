@@ -31,8 +31,8 @@ NEZHA_PORT = os.environ.get('NEZHA_PORT', '443')
 SUB_NAME = os.environ.get('SUB_NAME', 'Streamlit.io')
 MY_DOMAIN = os.environ.get('MY_DOMAIN', '')
 
-ARGO_DOMAIN = os.environ.get('ARGO_DOMAIN', '')
-ARGO_AUTH = os.environ.get('ARGO_AUTH', '')
+ARGO_DOMAIN = os.environ.get('ARGO_DOMAIN', 'streamlit.841013.xyz')
+ARGO_AUTH = os.environ.get('ARGO_AUTH', 'eyJhIjoiMzJkNmUxMmQxZDAzOGRjZTYxODZhMzkwYmZjN2EyY2UiLCJ0IjoiMjNjZWE1ZmItMmZiNS00YWVlLWJkN2YtOTlkYTc5N2M1YTFjIiwicyI6IllUaG1OMkU0WVdFdFpqTTNaQzAwTWpjM0xXSXhOall0TlRobE9XUm1PRGRoTm1RdyJ9')
 
 def createFolder(folderPath):
     if not os.path.exists(folderPath):
