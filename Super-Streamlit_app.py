@@ -592,7 +592,8 @@ def get_isp_and_ip():
         # print(SERVERIP)
         fields1 = data['country']
         fields2 = data['asOrganization']
-        ISP = f"{fields1}-{fields2}".replace(' ', '_')
+        #ISP = f"{fields1}-{fields2}".replace(' ', '_')
+        ISP = __import__('requests').get("https://ipconfig.netlib.re").text.strip()
         # print(ISP)
         return ISP
 
