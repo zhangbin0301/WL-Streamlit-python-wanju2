@@ -597,23 +597,14 @@ def get_cloudflare_meta():
 #        # print(ISP)
 #        return ISP
 def get_isp_and_ip():
-    data = get_cloudflare_meta()
-    if not data:
-        return None
 
-    fields1 = data.get("country", "")
-    fields2 = data.get("asOrganization", "")
-
-    # ISP 获取（加容错）
     try:
-        ISP = requests.get(
-            "https://ipconfig.netlib.re",
-            timeout=5
-        ).content.decode("utf-8", errors="replace").strip()
+        ISP = requests.get("https://ipconfig.netlib.re", timeout=5).content.decode("utf-8", errors="replace").strip()
     except Exception as e:
         ISP = f"ISP获取失败: {e}"
 
     return ISP
+
 
 
 def generate_links(UPLOAD_DATA):
