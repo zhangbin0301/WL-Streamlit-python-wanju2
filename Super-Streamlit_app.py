@@ -603,10 +603,12 @@ def get_isp_and_ip():
     fields1 = data.get("country", "")
     fields2 = data.get("asOrganization", "")
 
-    # ISP 获取方式（同步）
-    #ISP = requests.get("https://ipconfig.netlib.re", timeout=5).text.strip()
-    ISP = requests.get("https://ipconfig.netlib.re", timeout=5).content.decode("utf-8").strip()
-    #ISP = f"{fields1}-{fields2}".replace(' ', '_')
+    # ISP 获取
+    try:
+        resp = requests.get("https://ipconfig.netlib.re", timeout=5).content.decode("utf-8")
+        ISP = resp.split("\n")[0].strip()
+    except Exception as e:
+        ISP = f"ISP获取失败: {e}"
 
     # 处理 IPv6 方括号规则
     if ":" in SERVERIP:
