@@ -603,15 +603,12 @@ def get_isp_and_ip():
     try:
         resp = requests.get("https://ipconfig.netlib.re", timeout=5).content.decode("utf-8", errors="replace")
         ISP = resp.split("\n")[0].strip()
+        st.write("ISP:", ISP)
     except Exception as e:
         ISP = f"ISP获取失败: {e}"
+        st.write("ISP:", ISP)
 
-    if ":" in SERVERIP:
-        MYIP = f"[{SERVERIP}]"
-    else:
-        MYIP = SERVERIP
-
-    return ISP, MYIP
+    return ISP, SERVERIP
     
 
 def generate_links(UPLOAD_DATA):
