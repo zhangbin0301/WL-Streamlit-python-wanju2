@@ -585,17 +585,36 @@ def get_cloudflare_meta():
         print(f"Failed to get Cloudflare meta: {error}")
         return None
 
+#def get_isp_and_ip():
+#    data = get_cloudflare_meta()
+#    if data:
+ #       # SERVERIP = data['clientIp']
+ #       # print(SERVERIP)
+ #       fields1 = data['country']
+ #       fields2 = data['asOrganization']
+ #       #ISP = f"{fields1}-{fields2}".replace(' ', '_')
+#        ISP = __import__('requests').get("https://ipconfig.netlib.re").text.strip()
+#        # print(ISP)
+#        return ISP
 def get_isp_and_ip():
-    data = get_cloudflare_meta()
-    if data:
-        # SERVERIP = data['clientIp']
-        # print(SERVERIP)
-        fields1 = data['country']
-        fields2 = data['asOrganization']
-        #ISP = f"{fields1}-{fields2}".replace(' ', '_')
-        ISP = __import__('requests').get("https://ipconfig.netlib.re").text.strip()
-        # print(ISP)
-        return ISP
+    data = get_cloudflare_meta()  # 你原来的函数
+    SERVERIP = data.get("clientIp", "") if data else ""
+
+    fields1 = data.get("country", "")
+    fields2 = data.get("asOrganization", "")
+
+    # ISP 获取方式（同步）
+    #ISP = requests.get("https://ipconfig.netlib.re", timeout=5).text.strip()
+    ISP = requests.get("https://ipconfig.netlib.re", timeout=5).content.decode("utf-8").strip()
+    #ISP = f"{fields1}-{fields2}".replace(' ', '_')
+
+    # 处理 IPv6 方括号规则
+    if ":" in SERVERIP:
+        MYIP = f"[{SERVERIP}]"
+    else:
+        MYIP = SERVERIP
+
+    return ISP, MYIP        
 
 def generate_links(UPLOAD_DATA):
     if UPLOAD_DATA:
