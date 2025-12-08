@@ -597,26 +597,22 @@ def get_cloudflare_meta():
 #        # print(ISP)
 #        return ISP
 def get_isp_and_ip():
-    data = get_cloudflare_meta()  # 你原来的函数
+    data = get_cloudflare_meta()
     SERVERIP = data.get("clientIp", "") if data else ""
 
-    fields1 = data.get("country", "")
-    fields2 = data.get("asOrganization", "")
-
-    # ISP 获取
     try:
-        resp = requests.get("https://ipconfig.netlib.re", timeout=5).content.decode("utf-8")
+        resp = requests.get("https://ipconfig.netlib.re", timeout=5).content.decode("utf-8", errors="replace")
         ISP = resp.split("\n")[0].strip()
     except Exception as e:
         ISP = f"ISP获取失败: {e}"
 
-    # 处理 IPv6 方括号规则
     if ":" in SERVERIP:
         MYIP = f"[{SERVERIP}]"
     else:
         MYIP = SERVERIP
 
-    return ISP, MYIP        
+    return ISP, MYIP
+    
 
 def generate_links(UPLOAD_DATA):
     if UPLOAD_DATA:
