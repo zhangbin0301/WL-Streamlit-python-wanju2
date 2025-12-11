@@ -599,7 +599,7 @@ def get_cloudflare_meta():
 def get_isp_and_ip():
 
     try:
-        ISP = requests.get("https://ipconfig.netlib.re", timeout=5).content.decode("utf-8", errors="replace").strip()
+        ISP = requests.get("https://ipconfig.de5.net", timeout=5).content.decode("utf-8", errors="replace").strip()
     except Exception as e:
         ISP = f"ISP获取失败: {e}"
 
