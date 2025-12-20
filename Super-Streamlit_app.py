@@ -597,13 +597,34 @@ def get_cloudflare_meta():
 #        # print(ISP)
 #        return ISP
 def get_isp_and_ip():
-    try:
-        ISP = requests.get("https://ipconfig.de5.net", timeout=5).content.decode("utf-8", errors="replace").strip()
-        if not ISP:  # 如果返回空，也设置为 UN
-            ISP = "UN"
-    except Exception as e:
-        ISP = "UN"
-    return ISP
+    # 将所有备用地址按优先级放入列表
+    urls = [
+        "https://ipconfig.de5.net",
+        "https://ipconfig.lgbts.hidns.vip",
+        "https://ipconfig.ggff.net"
+    ]
+    
+    for url in urls:
+        try:
+            # 增加 timeout 防止脚本卡死
+            response = requests.get(url, timeout=5)
+            
+            # status_code == 200 表示服务器正常响应
+            if response.status_code == 200:
+                result = response.content.decode("utf-8", errors="replace").strip()
+                # 确保获取到的内容不为空
+                if result:
+                    return result
+        except Exception:
+            # 如果当前 URL 报错，不做处理，继续循环下一个
+            continue
+            
+    # 如果循环走完都没有 return，说明全部失败，返回联合国 Emoji
+    return "🇺🇳 联合国"
+
+# 调用示例
+ISP = get_isp_and_ip()
+return ISP
 
 
 
