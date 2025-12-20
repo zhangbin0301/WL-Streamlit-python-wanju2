@@ -597,12 +597,12 @@ def get_cloudflare_meta():
 #        # print(ISP)
 #        return ISP
 def get_isp_and_ip():
-
     try:
         ISP = requests.get("https://ipconfig.de5.net", timeout=5).content.decode("utf-8", errors="replace").strip()
+        if not ISP:  # 如果返回空，也设置为 UN
+            ISP = "UN"
     except Exception as e:
-        ISP = f"ISP获取失败: {e}"
-
+        ISP = "UN"
     return ISP
 
 
