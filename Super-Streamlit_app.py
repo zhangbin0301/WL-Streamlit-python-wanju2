@@ -525,9 +525,9 @@ def getArgoDomainFromLog():
 def buildurl(argo_domain, ISP):
     Node_DATA = None
     if VLPATH:
-        Node_DATA = f"vless://{UUID}@{CFIP}:{CFPORT}?encryption=none&security=tls&sni={argo_domain}&type=ws&host={argo_domain}&path=%2F{VLPATH}%3Fed%3D2560#{ISP}-{SUB_NAME}"
+        Node_DATA = f"vless://{UUID}@{CFIP}:{CFPORT}?encryption=none&security=tls&sni={argo_domain}&type=ws&host={argo_domain}&path=%2F{VLPATH}%3Fed%3D2560#{ISP} | {SUB_NAME}"
     elif XHPPATH:
-        Node_DATA = f"vless://{UUID}@{CFIP}:{CFPORT}?encryption=none&security=tls&sni={argo_domain}&type=xhttp&host={argo_domain}&path=%2F{XHPPATH}%3Fed%3D2560&mode=packet-up#{ISP}-{SUB_NAME}"
+        Node_DATA = f"vless://{UUID}@{CFIP}:{CFPORT}?encryption=none&security=tls&sni={argo_domain}&type=xhttp&host={argo_domain}&path=%2F{XHPPATH}%3Fed%3D2560&mode=packet-up#{ISP} | {SUB_NAME}"
     return Node_DATA
 
 async def extract_domains(args, ISP):
@@ -575,56 +575,58 @@ async def extract_domains(args, ISP):
     # print(UPLOAD_DATA)
     return argo_domain, UPLOAD_DATA
 
+MYIP_URL = ""
 def clean_string(s):
     if isinstance(s, str):
         result = re.sub(r'[\s,.]', '_', s)
         result = re.sub(r'_+', '_', result)
         return result.strip('_')
-    return s
+    return str(s) if s else "Unknown"
 
 def get_isp_and_ip():
+    global MYIP_URL
     ipapiurl = [
         'https://api.ip.sb/geoip/',
         'http://ip-api.com/json/',
     ]
     
     if MYIP_URL and MYIP_URL.strip():
-        ipapiurl.append(MYIP_URL.strip())
+        ipapiurl.insert(0, MYIP_URL.strip())
 
     for url in ipapiurl:
         try:
             response = requests.get(url, timeout=3)
+            if not response.ok:
+                continue
             data = response.json()
 
             raw_ip = data.get('ip') or data.get('query')
-            if raw_ip:
-                # IPv6 加方括号
-                MYIP = f'[{raw_ip}]' if ':' in raw_ip and not raw_ip.startswith('[') else raw_ip
+            if not raw_ip:
+                continue
 
-                # 获取国家/地区 Emoji
-                for u in ["https://ipconfig.de5.net", "https://ipconfig.ggff.net"]:
-                    try:
-                        r = requests.get(u, headers={"User-Agent": "Mozilla/5.0"}, timeout=3)
-                        if r.ok:
-                            country = r.text.strip()
-                            break
-                    except:
-                        continue
-                else:
-                    country = "🇺🇳 联合国"
+            country = "🇺🇳 联合国"
+            for u in ["https://ipconfig.de5.net", "https://ipconfig.ggff.net"]:
+                try:
+                    r = requests.get(u, headers={"User-Agent": "Mozilla/5.0"}, timeout=3)
+                    if r.ok and r.text.strip():
+                        country = r.text.strip()
+                        break
+                except:
+                    continue
 
-                # 清洗 ISP 名称
-                isp_raw = data.get('isp', 'Unknown')
-                isp_cleaned = clean_string(isp_raw).replace(' ', '_')
+            isp_raw = data.get('isp') or data.get('organization') or 'Unknown'
+            isp_cleaned = clean_string(isp_raw)
 
-                ISP = f"{country}_{isp_cleaned}"
+            # --- 正确的返回方式 ---
+            return f"{country}_{isp_cleaned}"
 
-                return ISP
-
-        except:
+        except Exception:
             continue
 
-    return '🇺🇳 联合国'
+    return '🇺🇳 联合国_Unknown'
+
+ISP = get_isp_and_ip() 
+print(ISP) 
 
 def generate_links(UPLOAD_DATA):
     if UPLOAD_DATA:
