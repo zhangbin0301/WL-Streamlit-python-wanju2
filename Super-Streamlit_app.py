@@ -618,12 +618,12 @@ def get_isp_and_ip():
             isp_cleaned = clean_string(isp_raw)
 
             # --- 正确的返回方式 ---
-            return f"{country}_{isp_cleaned}"
+            return f"{country}-{isp_cleaned}"
 
         except Exception:
             continue
 
-    return '🇺🇳 联合国_Unknown'
+    return '🇺🇳 联合国-Unknown'
 
 ISP = get_isp_and_ip() 
 print(ISP) 
