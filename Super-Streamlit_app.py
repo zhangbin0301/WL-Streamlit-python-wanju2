@@ -582,7 +582,7 @@ def clean_string(s):
         return result.strip('_')
     return s
 
-def get_ip_and_isp():
+def get_isp_and_ip():
     ipapiurl = [
         'https://api.ip.sb/geoip/',
         'http://ip-api.com/json/',
