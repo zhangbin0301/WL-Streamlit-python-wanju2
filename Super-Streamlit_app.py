@@ -575,59 +575,56 @@ async def extract_domains(args, ISP):
     # print(UPLOAD_DATA)
     return argo_domain, UPLOAD_DATA
 
-def get_cloudflare_meta():
-    try:
-        with requests.Session() as session:
-            response = session.get('https://speed.cloudflare.com/meta')
-            data = response.json()
-            return data
-    except Exception as error:
-        print(f"Failed to get Cloudflare meta: {error}")
-        return None
+def clean_string(s):
+    if isinstance(s, str):
+        result = re.sub(r'[\s,.]', '_', s)
+        result = re.sub(r'_+', '_', result)
+        return result.strip('_')
+    return s
 
-#def get_isp_and_ip():
-#    data = get_cloudflare_meta()
-#    if data:
- #       # SERVERIP = data['clientIp']
- #       # print(SERVERIP)
- #       fields1 = data['country']
- #       fields2 = data['asOrganization']
- #       #ISP = f"{fields1}-{fields2}".replace(' ', '_')
-#        ISP = __import__('requests').get("https://ipconfig.netlib.re").text.strip()
-#        # print(ISP)
-#        return ISP
-def get_isp_and_ip():
-    # 1. 定义备用 URL 列表
-    urls = [
-        "https://ipconfig.de5.net",
-        "https://ipconfig.lgbts.hidns.vip",
-        "https://ipconfig.ggff.net"
+def get_ip_and_isp():
+    ipapiurl = [
+        'https://api.ip.sb/geoip/',
+        'http://ip-api.com/json/',
     ]
     
-    # 默认值
-    isp_result = "🇺🇳 联合国"
+    if MYIP_URL and MYIP_URL.strip():
+        ipapiurl.append(MYIP_URL.strip())
 
-    # 2. 循环尝试
-    for url in urls:
+    for url in ipapiurl:
         try:
-            response = requests.get(url, timeout=5)
-            # 只有状态码为 200 且内容不为空时才采用
-            if response.status_code == 200:
-                content = response.content.decode("utf-8", errors="replace").strip()
-                if content:
-                    isp_result = content
-                    break  # 成功获取，跳出循环
-        except Exception:
-            continue # 出错则尝试下一个
-            
-    # 3. 确保 return 在函数内部（注意这里的缩进！）
-    return isp_result
+            response = requests.get(url, timeout=3)
+            data = response.json()
 
-# 在函数外部调用
-ISP = get_isp_and_ip()
-print(ISP)
+            raw_ip = data.get('ip') or data.get('query')
+            if raw_ip:
+                # IPv6 加方括号
+                MYIP = f'[{raw_ip}]' if ':' in raw_ip and not raw_ip.startswith('[') else raw_ip
 
+                # 获取国家/地区 Emoji
+                for u in ["https://ipconfig.de5.net", "https://ipconfig.ggff.net"]:
+                    try:
+                        r = requests.get(u, headers={"User-Agent": "Mozilla/5.0"}, timeout=3)
+                        if r.ok:
+                            country = r.text.strip()
+                            break
+                    except:
+                        continue
+                else:
+                    country = "🇺🇳 联合国"
 
+                # 清洗 ISP 名称
+                isp_raw = data.get('isp', 'Unknown')
+                isp_cleaned = clean_string(isp_raw).replace(' ', '_')
+
+                ISP = f"{country}_{isp_cleaned}"
+
+                return ISP
+
+        except:
+            continue
+
+    return '🇺🇳 联合国'
 
 def generate_links(UPLOAD_DATA):
     if UPLOAD_DATA:
