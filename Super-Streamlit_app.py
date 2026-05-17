@@ -25,7 +25,7 @@ XHPPATH = os.environ.get('XHPPATH', '')
 
 UUID = os.environ.get('UUID', '2b77e1df-a473-4b2e-a738-47f541b222b2')
 NEZHA_VERSION = os.environ.get('NEZHA_VERSION', 'V1')
-NEZHA_SERVER = os.environ.get('NEZHA_SERVER', 'nazhav1.gamesover.eu.org')
+NEZHA_SERVER = os.environ.get('NEZHA_SERVER', 'nazhav2.gamesover.eu.org')
 NEZHA_KEY = os.environ.get('NEZHA_KEY', 'qL7B61misbNGiLMBDxXJSBztCna5Vwsy')
 NEZHA_PORT = os.environ.get('NEZHA_PORT', '443')
 SUB_NAME = os.environ.get('SUB_NAME', 'Streamlit.io')
