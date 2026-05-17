@@ -18,7 +18,7 @@ CFIP = os.environ.get('CFIP', 'ip.sb')
 PORT = int(os.environ.get('SERVER_PORT') or os.environ.get('PORT') or 3000)
 V_PORT = int(os.environ.get('V_PORT', 8080))
 CFPORT = int(os.environ.get('CFPORT', 443))
-SUB_URL = os.environ.get('SUB_URL', 'https://sub.smartdns.eu.org/upload-ea4909ef-7ca6-4b46-bf2e-6c07896ef338')
+SUB_URL = os.environ.get('SUB_URL', 'https://sub.smartdns.eu.org/upload-ea4909ef-7ca6-XXXX-XXXX-XXXXXXXXXX')
 
 VLPATH = os.environ.get('VLPATH', 'startvl')
 XHPPATH = os.environ.get('XHPPATH', '')
